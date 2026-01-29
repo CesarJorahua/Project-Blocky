@@ -1,3 +1,4 @@
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,11 +23,13 @@ public class ScoreAndMoveManager : MonoBehaviour
     private void Awake()
     {
         currentMoves = startingMoves;
-        if(gameOverScreen==null)
-            Debug.LogError($"[{GetType()}] GameOver screen not found! Make sure there is attached to this component.", this);
-        if(presentationScreen==null)
-            Debug.LogError($"[{GetType()}] Presentation screen not found! Make sure there is attached to this component.", this);
 
+        ValidateReference(gameOverScreen,"Game over");
+        ValidateReference(presentationScreen,"Presentation screen");
+        ValidateReference(movesText,"Moves TMP object");
+        ValidateReference(scoreText,"Score TMP object");
+
+        ApplyStartingValues();
     }
 
     public void MakeMove()
@@ -35,6 +38,8 @@ public class ScoreAndMoveManager : MonoBehaviour
         score+=10;
         Debug.Log($"[{GetType()}] Current moves:  " + currentMoves);
         Debug.Log($"[{GetType()}] Score: " + score);
+        scoreText.text = score.ToString("N0", new CultureInfo("es-MX"));
+        movesText.text = currentMoves.ToString();
         if (currentMoves <= 0)
         {
             gameOverScreen.SetActive(true);
@@ -48,7 +53,22 @@ public class ScoreAndMoveManager : MonoBehaviour
     {
         currentMoves = startingMoves;
         score = 0;
+        presentationScreen.GetComponent<GraphicRaycaster>().enabled = true;
+        ApplyStartingValues();
         gameOverScreen.SetActive(false);
     }
 
+    private void ValidateReference<T>(T reference, string objectName)
+    {
+        if (reference == null)
+        {
+            Debug.LogError($"[{GetType()}] {objectName} not found! Make sure it is attached to this component.",this);
+        }
+    }
+
+    private void ApplyStartingValues()
+    {
+        movesText.text = startingMoves.ToString();
+        scoreText.text = "0";
+    }
 }
