@@ -106,7 +106,38 @@ public class GridManager : MonoBehaviour
         ScoreAndMoveManager.Instance.UseMove();
 
         yield return new WaitForSeconds(1f);
-
+        MoveBlocksGravity();
         inputLocked = false;
+    }
+
+    private void MoveBlocksGravity()
+    {
+        for (int col = 0; col < cols; col++)
+        {
+            for (int row = rows - 1; row >= 0; row--)
+            {
+                if (grid[row, col] == null)
+                {
+                    for (int above = row - 1; above >= 0; above--)
+                    {
+                        if (grid[above, col] != null)
+                        {
+                            MoveBlock(above, row, col);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void MoveBlock(int fromRow, int toRow, int col)
+    {
+        var block = grid[fromRow, col];
+
+        grid[fromRow, col] = null;
+        grid[toRow, col] = block;
+
+        block.Row = toRow;
+        block.transform.position = GetWorldPosition(toRow, col);
     }
 }
