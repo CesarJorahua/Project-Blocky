@@ -65,4 +65,28 @@ public class GridManager : MonoBehaviour
 
         return gridRoot.transform.position + new Vector3(x, y, 0f);
     }
+
+    public void OnClickBlock(Block start)
+    {
+        HashSet<Block> collected = new HashSet<Block>();
+        BlockLookup(start.Row, start.Col, start.Color, collected);
+        if(collected.Count == 0)
+            return;
+
+        ScoreAndMoveManager.Instance.AddScore(collected.Count);
+        ScoreAndMoveManager.Instance.UseMove();
+    }
+
+    private void BlockLookup(int row, int col, BlockColor color, HashSet<Block> collected)
+    {
+        if (row < 0 || row >= rows || col < 0 || col >= cols)
+            return;
+        Block block = grid[row, col];
+        if (block == null || block.Color != color || !collected.Add(block))
+            return;
+        BlockLookup(row + 1, col, color, collected);
+        BlockLookup(row - 1, col, color, collected);
+        BlockLookup(row, col + 1, color, collected);
+        BlockLookup(row, col - 1, color, collected);
+    }
 }

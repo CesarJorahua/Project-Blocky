@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "name": "PlayerActions",
+    "maps": [
+        {
+            "name": "Game",
+            "id": "977ed8cf-703f-4544-8e1e-fce7ca36419d",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "760cbabd-9432-432f-93cb-2f9e4388c1c9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "09aaa886-2ec1-42fb-aa11-2d92b7f820a9",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70d65d98-e5a3-435d-89f4-76922413db50",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
