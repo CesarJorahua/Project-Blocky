@@ -17,13 +17,14 @@ public class ScoreAndMoveManager : MonoBehaviour
     [SerializeField] private TMPro.TextMeshProUGUI scoreText;
 
     private int currentMoves;
-
     private int score = 0;
+
+    public static ScoreAndMoveManager Instance { get; private set; }
 
     private void Awake()
     {
         currentMoves = startingMoves;
-
+        Instance = this;
         ValidateReference(gameOverScreen,"Game over");
         ValidateReference(presentationScreen,"Presentation screen");
         ValidateReference(movesText,"Moves TMP object");
@@ -70,5 +71,15 @@ public class ScoreAndMoveManager : MonoBehaviour
     {
         movesText.text = startingMoves.ToString();
         scoreText.text = "0";
+    }
+
+    public void AddScore(int adition)
+    {
+        score += adition;
+    }
+
+    public void UseMove()
+    {
+        currentMoves--;
     }
 }
