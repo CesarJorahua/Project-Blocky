@@ -18,13 +18,16 @@ public class ScoreAndMoveManager : MonoBehaviour
 
     private int currentMoves;
     private int score = 0;
+    private InputManager inputManager;
 
+    //TODO: Replace this pseudo singleton with DI implementation
     public static ScoreAndMoveManager Instance { get; private set; }
 
     private void Awake()
     {
         currentMoves = startingMoves;
         Instance = this;
+        inputManager = FindFirstObjectByType<InputManager>();
         ValidateReference(gameOverScreen,"Game over");
         ValidateReference(presentationScreen,"Presentation screen");
         ValidateReference(movesText,"Moves TMP object");
@@ -57,6 +60,7 @@ public class ScoreAndMoveManager : MonoBehaviour
         presentationScreen.GetComponent<GraphicRaycaster>().enabled = true;
         ApplyStartingValues();
         gameOverScreen.SetActive(false);
+        inputManager.enabled = true;
     }
 
     private void ValidateReference<T>(T reference, string objectName)
@@ -73,13 +77,23 @@ public class ScoreAndMoveManager : MonoBehaviour
         scoreText.text = "0";
     }
 
-    public void AddScore(int adition)
+    public void AddScore(int addition)
     {
-        score += adition;
+        score += addition * 10;
+        scoreText.text = score.ToString("N0", new CultureInfo("es-MX"));
     }
 
     public void UseMove()
     {
         currentMoves--;
+        movesText.text = currentMoves.ToString();
+        if (currentMoves <= 0)
+        {
+            gameOverScreen.SetActive(true);
+            //Disable interaction with the presentation canvas
+            presentationScreen.GetComponent<GraphicRaycaster>().enabled = false;
+            inputManager.enabled = false;
+            Debug.Log($"[{GetType()}] Game over restart");
+        }
     }
 }

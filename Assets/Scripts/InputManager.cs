@@ -34,7 +34,7 @@ public class InputManager : MonoBehaviour
 
             if (hit.collider.TryGetComponent<Block>(out var block))
             {
-                // grid.OnBlockClicked(block);
+                block.OnClickedBlock();
             }
         }
     }

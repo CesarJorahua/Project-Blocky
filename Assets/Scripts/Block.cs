@@ -13,6 +13,12 @@ public class Block : MonoBehaviour
     {
         Row = row;
         Col = col;
+        _grid = FindFirstObjectByType<GridManager>();
+    }
+
+    public void OnClickedBlock()
+    {
+        _grid.OnClickBlock(this);
     }
 }
 
