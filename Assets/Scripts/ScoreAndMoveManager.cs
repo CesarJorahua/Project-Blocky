@@ -1,7 +1,15 @@
+using System;
 using System.Globalization;
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// TODO: Separate the score and move management into different classes
+/// TODO: Implement DI for better testability
+/// <summary>
+/// Manages game score and move count, tracking player progress and game state.
+/// Handles game over conditions, UI updates, and game reset functionality using a pseudo-singleton pattern.
+/// </summary>
 public class ScoreAndMoveManager : MonoBehaviour
 {
     [SerializeField] private int startingMoves = 5;
@@ -23,6 +31,10 @@ public class ScoreAndMoveManager : MonoBehaviour
     //TODO: Replace this pseudo singleton with DI implementation
     public static ScoreAndMoveManager Instance { get; private set; }
 
+    /// <summary>
+    /// Initializes the score and move manager, validates references, and applies starting values.
+    /// Sets the pseudo singleton instance and retrieves the InputManager reference.
+    /// </summary>
     private void Awake()
     {
         currentMoves = startingMoves;
@@ -36,6 +48,11 @@ public class ScoreAndMoveManager : MonoBehaviour
         ApplyStartingValues();
     }
 
+    /// <summary>
+    /// Decrements the move counter, adds 10 points to the score, and updates the UI.
+    /// Triggers game over screen when moves reach zero or below.
+    /// </summary>
+    [Obsolete("Implemented for task 2 and removed after completion of task 3")]
     public void MakeMove()
     {
         currentMoves--;
@@ -53,6 +70,9 @@ public class ScoreAndMoveManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Resets the game state by restoring initial variables and UI elements.
+    /// </summary>
     public void ResetGameplay()
     {
         currentMoves = startingMoves;
@@ -63,6 +83,12 @@ public class ScoreAndMoveManager : MonoBehaviour
         inputManager.enabled = true;
     }
 
+    /// <summary>
+    /// Validates that a reference is not null and logs an error if it is missing.
+    /// </summary>
+    /// <typeparam name="T">The type of the reference to validate.</typeparam>
+    /// <param name="reference">The reference to check.</param>
+    /// <param name="objectName">The name of the object being validated (for error messages).</param>
     private void ValidateReference<T>(T reference, string objectName)
     {
         if (reference == null)
@@ -71,18 +97,30 @@ public class ScoreAndMoveManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies the starting values to the UI text elements for moves and score.
+    /// </summary>
     private void ApplyStartingValues()
     {
         movesText.text = startingMoves.ToString();
         scoreText.text = "0";
     }
 
-    public void AddScore(int addition)
+    /// <summary>
+    /// Adds points to the current score based on the number of blocks removed and updates the UI.
+    /// </summary>
+    /// <param name="blocksCollected">The number of blocks removed.</param>
+    public void AddScore(int blocksCollected)
     {
-        score += addition * 10;
+        score += blocksCollected * Constants.POINT_MULTIPLIER;
+        //Format show in the image (score with thousands separator)
         scoreText.text = score.ToString("N0", new CultureInfo("es-MX"));
     }
 
+    /// <summary>
+    /// Decrements the move counter and updates the UI.
+    /// Triggers game over screen and disables player input when moves reach zero or below.
+    /// </summary>
     public void UseMove()
     {
         currentMoves--;
