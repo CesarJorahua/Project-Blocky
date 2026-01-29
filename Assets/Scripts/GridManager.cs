@@ -20,6 +20,7 @@ public class GridManager : MonoBehaviour
     //Block height 112px/100 units per pixel
     private const float CELL_HEIGHT = 1.12f;
 
+    private bool inputLocked = false;
     private void Start()
     {
         InitializeGrid();
@@ -68,13 +69,13 @@ public class GridManager : MonoBehaviour
 
     public void OnClickBlock(Block start)
     {
+        if (inputLocked)
+            return;
         HashSet<Block> collected = new HashSet<Block>();
         BlockLookup(start.Row, start.Col, start.Color, collected);
         if(collected.Count == 0)
             return;
-
-        ScoreAndMoveManager.Instance.AddScore(collected.Count);
-        ScoreAndMoveManager.Instance.UseMove();
+        StartCoroutine(ResolveTurn(collected));
     }
 
     private void BlockLookup(int row, int col, BlockColor color, HashSet<Block> collected)
@@ -88,5 +89,24 @@ public class GridManager : MonoBehaviour
         BlockLookup(row - 1, col, color, collected);
         BlockLookup(row, col + 1, color, collected);
         BlockLookup(row, col - 1, color, collected);
+    }
+
+    private IEnumerator ResolveTurn(HashSet<Block> collected)
+    {
+        inputLocked = true;
+
+        // Remove blocks
+        foreach (var block in collected)
+        {
+            grid[block.Row, block.Col] = null;
+            Destroy(block.gameObject);
+        }
+
+        ScoreAndMoveManager.Instance.AddScore(collected.Count);
+        ScoreAndMoveManager.Instance.UseMove();
+
+        yield return new WaitForSeconds(1f);
+
+        inputLocked = false;
     }
 }
