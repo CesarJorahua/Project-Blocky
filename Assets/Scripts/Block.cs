@@ -21,11 +21,6 @@ public class Block : MonoBehaviour
         Col = col;
         Color = color;
     }
-
-    private void OnMouseDown()
-    {
-        grid.OnBlockClicked(this);
-    }
 }
 
 [SerializeField]
