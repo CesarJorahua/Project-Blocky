@@ -7,19 +7,12 @@ public class Block : MonoBehaviour
 
     [SerializeField] private BlockColor color;
 
-    public BlockColor Color
-    {
-        get => color;
-        set => color = value;
-    }
-
     private GridManager grid;
 
-    public void Init(int row, int col, BlockColor color)
+    public void Init(int row, int col)
     {
         Row = row;
         Col = col;
-        Color = color;
     }
 }
 
