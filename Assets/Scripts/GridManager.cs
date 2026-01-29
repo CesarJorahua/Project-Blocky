@@ -53,7 +53,7 @@ public class GridManager : MonoBehaviour
         var block = Instantiate(blockPrefabs[Random.Range(0,blockPrefabs.Count)], gridRoot);
 
         block.GetComponent<Block>().Init(row, col);
-        block.transform.localPosition = GetWorldPosition(row, col);
+        block.transform.position = GetWorldPosition(row, col);
         block.GetComponent<SpriteRenderer>().sortingOrder = rows - row;
 
         grid[row, col] = block.GetComponent<Block>();
@@ -107,6 +107,7 @@ public class GridManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         MoveBlocksGravity();
+        RefillGrid();
         inputLocked = false;
     }
 
@@ -139,5 +140,17 @@ public class GridManager : MonoBehaviour
 
         block.Row = toRow;
         block.transform.position = GetWorldPosition(toRow, col);
+    }
+
+    private void RefillGrid()
+    {
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                if (grid[r, c] == null)
+                    CreateBlock(r, c);
+            }
+        }
     }
 }
