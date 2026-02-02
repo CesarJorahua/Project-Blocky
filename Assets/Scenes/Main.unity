@@ -148,6 +148,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 612213144}
   - {fileID: 850711044}
   - {fileID: 232825281}
   - {fileID: 919076663}
@@ -841,6 +842,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 568984616}
   m_CullTransparentMesh: 1
+--- !u!1 &612213143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 612213144}
+  - component: {fileID: 612213145}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &612213144
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612213143}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 103362507}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &612213145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612213143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 792a5661d8e18a447b458ef2a050ce1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameOverScreen: {fileID: 1092541192}
+  restartButton: {fileID: 1705560349}
 --- !u!1 &627103791
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,6 +1011,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 850711045}
   inputManager: {fileID: 232825282}
+  gameManager: {fileID: 612213145}
 --- !u!114 &695733607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1988,8 +2036,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movesText: {fileID: 2114997149}
-  gameOverScreen: {fileID: 1092541192}
-  restartButton: {fileID: 1705560349}
 --- !u!1 &2114997147
 GameObject:
   m_ObjectHideFlags: 0

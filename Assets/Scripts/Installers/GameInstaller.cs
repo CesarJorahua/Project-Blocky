@@ -14,13 +14,16 @@ namespace Installers
         [SerializeField, UsedImplicitly]
         private InputManager inputManager;
 
+        [SerializeField, UsedImplicitly]
+        private GameManager gameManager;
+
         public override void InstallBindings()
         {
-            Container.Bind<GridManager>().FromInstance(gridManager).AsSingle().NonLazy();
-            Container.Bind<InputManager>().FromInstance(inputManager).AsSingle().NonLazy();
             Container.Bind<ScoreManager>().AsSingle().NonLazy();
             Container.Bind<MoveManager>().AsSingle().NonLazy();
-            Container.Bind<GameManager>().AsSingle().NonLazy();
+            Container.Bind<GridManager>().FromInstance(gridManager).AsSingle().NonLazy();
+            Container.Bind<GameManager>().FromInstance(gameManager).AsSingle().NonLazy();
+            Container.Bind<InputManager>().FromInstance(inputManager).AsSingle().NonLazy();
         }
     } 
 }

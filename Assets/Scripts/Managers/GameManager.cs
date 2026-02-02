@@ -1,24 +1,63 @@
-using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Zenject;
 
 namespace ProjectBlocky.Managers
 {
     /// <summary>
     /// Central game state manager responsible for game flow control, including restart functionality.
     /// </summary>
-    public class GameManager
+    public class GameManager : MonoBehaviour
     {
-        public event Action OnGameRestart;
+        private ScoreManager _scoreManager;
+        private MoveManager _moveManager;
+        private GridManager _gridManager;
 
-        private readonly ScoreManager _scoreManager;
-        private readonly MoveManager _moveManager;
-        private readonly GridManager _gridManager;
+        [SerializeField] private GameObject gameOverScreen;
+        [SerializeField] private Button restartButton;
 
-        public GameManager(ScoreManager scoreManager, MoveManager moveManager, GridManager gridManager)
+        [Inject]
+        public void Construct(
+            ScoreManager scoreManager,
+            MoveManager moveManager,
+            GridManager gridManager)
         {
             _scoreManager = scoreManager;
             _moveManager = moveManager;
             _gridManager = gridManager;
+        }
+
+        private void Awake()
+        {
+            // Bind the restart button click to the GameManager's restart method
+            if (restartButton != null)
+            {
+                restartButton.onClick.AddListener(OnRestartButtonClicked);
+            }
+        }
+        private void OnDestroy()
+        {
+            // Clean up button listener to prevent memory leaks
+            if (restartButton != null)
+            {
+                restartButton.onClick.RemoveListener(OnRestartButtonClicked);
+            }
+        }
+
+        private void OnRestartButtonClicked()
+        {
+            RestartGame();
+        }
+
+        private void OnEnable()
+        {
+            _moveManager!.OnGameOver += ShowGameOver;
+        }
+
+        private void OnDisable()
+        {
+            _moveManager!.OnGameOver -= ShowGameOver;
         }
 
         /// <summary>
@@ -32,9 +71,17 @@ namespace ProjectBlocky.Managers
             _scoreManager.Initialize();
             _moveManager.Initialize();
             _gridManager.RestartGrid();
-            
-            // Notify all subscribers that the game has restarted
-            OnGameRestart?.Invoke();
+            HideGameOver();
+        }
+
+        private void ShowGameOver()
+        {
+            gameOverScreen.SetActive(true);
+        }
+
+        private void HideGameOver()
+        {
+            gameOverScreen.SetActive(false);
         }
     }
 }
