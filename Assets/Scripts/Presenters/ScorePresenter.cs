@@ -5,6 +5,9 @@ using ProjectBlocky.Managers;
 
 namespace ProjectBlocky.Presenters
 {
+    /// <summary>
+    /// Updates the score text with the current score.
+    /// </summary>
     public class ScorePresenter : MonoBehaviour
     {
         [SerializeField] private TMP_Text scoreText;

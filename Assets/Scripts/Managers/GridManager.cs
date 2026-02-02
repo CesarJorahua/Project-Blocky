@@ -70,6 +70,9 @@ namespace ProjectBlocky.Managers
             }
         }
 
+        /// <summary>
+        /// Initializes the score and move managers.
+        /// </summary>
         private void InitializeManagers()
         {
             _scoreManager.Initialize();

@@ -6,6 +6,9 @@ using ProjectBlocky.Managers;
 
 namespace ProjectBlocky.Presenters
 {
+    /// <summary>
+    /// Updates the moves text with the current number of moves.
+    /// </summary>
     public class MovePresenter : MonoBehaviour
     {
         [SerializeField] private TMP_Text movesText;
