@@ -69,20 +69,22 @@ Project-Blocky/
 
 **GameInstaller.cs** - Configures the entire dependency graph:
 ```csharp
-Container.Bind<GridManager>().FromInstance(gridManager).AsSingle().NonLazy();
-Container.Bind<InputManager>().FromInstance(inputManager).AsSingle().NonLazy();
 Container.Bind<ScoreManager>().AsSingle().NonLazy();
 Container.Bind<MoveManager>().AsSingle().NonLazy();
-Container.Bind<GameManager>().AsSingle().NonLazy();
+Container.Bind<GridManager>().FromInstance(gridManager).AsSingle().NonLazy();
+Container.Bind<GameManager>().FromInstance(gameManager).AsSingle().NonLazy();
+Container.Bind<InputManager>().FromInstance(inputManager).AsSingle().NonLazy();
 ```
 
 ### Managers (Business Logic)
 
-#### **GameManager**
+#### **GameManager** (MonoBehaviour)
 - Orchestrates game state and restart flow
 - Coordinates reinitialization of all managers
-- Provides `OnGameRestart` event for UI updates
-- **Key Method**: `RestartGame()` - Resets entire game state
+- **Manages game over UI** (shows/hides game over screen)
+- **Binds restart button** programmatically in `Awake()`
+- Subscribes to `MoveManager.OnGameOver` to show game over screen
+- **Key Method**: `RestartGame()` - Resets all managers and hides game over screen
 
 #### **GridManager**
 - Creates and manages the 6x5 grid of blocks
@@ -118,10 +120,9 @@ Container.Bind<GameManager>().AsSingle().NonLazy();
 
 #### **MovePresenter**
 - Displays remaining moves via TextMeshPro
-- Shows/hides game over screen
-- **Programmatically binds restart button** to `GameManager.RestartGame()`
-- Manages game over UI state via events
-- No editor UnityEvent dependencies
+- Subscribes to `MoveManager.OnMovesChanged`
+- Updates UI reactively when moves change
+- **Single responsibility**: Only handles move count display
 
 ### Game Flow
 
@@ -137,16 +138,18 @@ graph TD
     F --> H[Decrement Moves]
     H --> I{Moves > 0?}
     I -->|Yes| J[Apply Gravity]
-    I -->|No| K[Trigger Game Over]
+    I -->|No| K[MoveManager.OnGameOver Event]
     J --> L[Refill Grid]
     L --> A
-    K --> M[Show Game Over Screen]
-    M --> N[Player Clicks Restart]
+    K --> M[GameManager.ShowGameOver]
+    M --> N[Player Clicks Restart Button]
     N --> O[GameManager.RestartGame]
     O --> P[Reset All Managers]
     P --> Q[Clear & Recreate Grid]
-    Q --> A
+    Q --> R[GameManager.HideGameOver]
+    R --> A
 ```
+
 
 ## 🛠️ Technologies Used
 
