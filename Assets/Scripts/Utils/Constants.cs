@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts
+﻿namespace ProjectBlocky.Utils
 {
     public static class Constants
     {
