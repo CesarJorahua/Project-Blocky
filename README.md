@@ -169,7 +169,7 @@ graph TD
 ### Setup
 1. Clone the repository:
    ```bash
-   git clone https://github.com/YourUsername/Project-Blocky.git
+   git clone https://github.com/CesarJorahua/Project-Blocky.git
    ```
 2. Open the project folder in Unity Hub
 3. Unity will automatically import Zenject and other packages
