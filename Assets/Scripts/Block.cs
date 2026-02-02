@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+using ProjectBlocky.Utils;
 
-///TODO: Object pooling implementation for block creation 
 /// <summary>
 /// Class representing a single block in the grid.
 /// </summary>
@@ -10,28 +9,11 @@ public class Block : MonoBehaviour
     public int Row { get; set; }
     public int Col { get; set; }
 
-    public BlockColor Color;
-
-    private GridManager _grid;
-    public void Init(int row, int col)
+    public BlockColor color;
+    public void Init(int row, int col, BlockColor blockColor)
     {
         Row = row;
         Col = col;
-        _grid = FindFirstObjectByType<GridManager>();
+        this.color = blockColor;
     }
-
-    public void OnClickedBlock()
-    {
-        _grid.OnClickBlock(this);
-    }
-}
-
-[SerializeField]
-public enum BlockColor
-{
-    Green,
-    Purple,
-    Yellow,
-    Brown,
-    Pink
 }
